@@ -30,4 +30,10 @@ for i in range( len( job_titles ) ):
     Location_name.append( location_name[i].text )
     Job_skills_name.append( job_skills[i].text )
 
-    print( Job_titles, Company_names, Location_name, Job_skills_name )
+
+##create  csv file to save the data .
+
+with open( "employee1.csv", "w" ) as job_file:
+    wr = csv.writer( job_file )
+    wr.writerow( ["job title,", "company name", "location", "Job_skills"] )
+    wr.writerows([Job_titles,Company_names,Location_name,Job_skills_name])
