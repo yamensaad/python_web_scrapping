@@ -1,24 +1,33 @@
+from bs4 import BeautifulSoup
+import requests
+import csv
+from itertools import zip_longest
 
-from bs4 import  BeautifulSoup
+result = requests.get( "https://wuzzuf.net/search/jobs/?q=python&a=hpb" )
+Job_titles = []
+Company_names = []
+Location_name = []
+Job_skills_name = []
 
+## this to save the content from the webpage
+src = result.content
+print( src )
+# 4th step create a soup object to parse content
 
-with open('home.html', 'r') as html_file:
-    content = html_file.read()
+soup = BeautifulSoup( src, 'lxml' )
 
-    soup = BeautifulSoup( content, 'lxml' )
-    course_cards = soup.findAll('div',class_= 'card')
-    for course in course_cards:
-        course_name = course.h5.text ##it will search for text attribute
-        course_price = course.a #a tage install the information about course price.
-        print(course_name)
-        print(course_price)
-        course_name = course.h5.text
+##find the element that you want .
+## job titles,job skills, comapny names,location names.
 
+job_titles = soup.find_all( "h2", {"class": "css-m604qf"} )  ##it return a list. the second paramert is dic
+company_names = soup.find_all( "a", {"class": "css-17s97q8"} )
+location_name = soup.find_all( "span", {"class": "css-5wys0k"} )
+job_skills = soup.find_all( "div", {"class": "css-y4udm8"} )
 
-    
+for i in range( len( job_titles ) ):
+    Job_titles.append( job_titles[i].text )
+    Company_names.append( company_names[i].text )
+    Location_name.append( location_name[i].text )
+    Job_skills_name.append( job_skills[i].text )
 
-
-
-
-
-
+    print( Job_titles, Company_names, Location_name, Job_skills_name )
